@@ -70,7 +70,7 @@ def Couleur_Dominante(tab,tab_couleur):
 
 
 #Moyenne des 25x25 de l'image source
-def Moyenne_Image_Source(im_source,pix_source,newsize,tab_couleur):
+def Moyenne_Image_Source(im_source,pix_source,new_size,tab_couleur):
 	for y in range(image.size[1]//25):
 		for x in range(image.size[0]//25):
 			s_source_r = 0
