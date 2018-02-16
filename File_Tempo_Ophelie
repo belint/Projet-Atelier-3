@@ -1,5 +1,23 @@
+#Moyenne des 25x25 de l'image source
+def Moyenne_Couleur_25x25_Image_Source(image,newsize):
+	for y in range(image.size[1]//25):
+		for x in range(image.size[0]//25):
+			s_source_r = 0
+			s_source_g = 0
+			s_source_b = 0
+			nb_pixel_source = image.size[0]*image.size[1]
+			
+			for y_2 in range(new_size+1):
+				for x_2 in range(new_size+1):
+					r,g,b = pix_source[(x+1)*x_2,(y+1)*y_2]
+					s_source_r += r
+					s_source_g += g
+					s_source_b += b
+			cd_source_r,cd_source_g,cd_source_b = s_source_r//nb_pixel_source ,s_source_g//nb_pixel_source ,s_source_b//nb_pixel_source
+			
+
 #Remplacement des 25x25 pixel par la meilleur image
-def Remplacement_25x25_Par_Meilleur_Image(new_size)
+def Remplacement_25x25_Par_Meilleur_Image(new_size):
 			for y_3 in range(new_size+1):
 				for x_3 in range(new_size+1):
 					pix_copy[(x+1)*x_3,(y+1)*y_3] = pix_tempo[(x+1)*x_3,(y+1)*y_3]
