@@ -67,6 +67,7 @@ def mosaique(im_source):
 				for x_3 in range(new_size+1):
 					pix_copy[(x+1)*x_3,(y+1)*y_3] = pix_tempo[(x+1)*x_3,(y+1)*y_3]
 
+
 	return cop
 def main():
     if sys.arg[0] == None:
