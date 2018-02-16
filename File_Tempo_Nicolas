@@ -51,8 +51,19 @@ def mosaique(im_source):
 					s_source_b += b
 			cd_source_r,cd_source_g,cd_source_b = s_source_r//nb_pixel_source ,s_source_g//nb_pixel_source ,s_source_b//nb_pixel_source
 			
-			#Recherche de la meilleur image
-def Best_Comp(tab_couleur,min,indice,cd_source_r,cd_source_g,cd_source_b)
+			indice = Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b)
+
+			pix_tempo = tab[indice].load()
+	
+			#Remplacement des 25x25 pixel par la meilleur image
+			for y_3 in range(new_size+1):
+				for x_3 in range(new_size+1):
+					pix_copy[(x+1)*x_3,(y+1)*y_3] = pix_tempo[(x+1)*x_3,(y+1)*y_3]
+
+	return cop
+			
+	#Recherche de la meilleur image
+def Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b)
 	min = 255*3
 	indice = 0
 	for i in range(len(tab_couleur)):
@@ -63,14 +74,6 @@ def Best_Comp(tab_couleur,min,indice,cd_source_r,cd_source_g,cd_source_b)
 			indice = tab_couleur[i][0]
 	return indice
 			
-	pix_tempo = tab[indice].load()
-	
-			#Remplacement des 25x25 pixel par la meilleur image
-			for y_3 in range(new_size+1):
-				for x_3 in range(new_size+1):
-					pix_copy[(x+1)*x_3,(y+1)*y_3] = pix_tempo[(x+1)*x_3,(y+1)*y_3]
-
-	return cop
 def main():
     if sys.arg[0] == None:
         print("Vous n'avez pas rentrer d'image")
