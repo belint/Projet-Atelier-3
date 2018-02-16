@@ -12,8 +12,8 @@ def mosaique(im_source):
 	for i in range(len(tab_nom_image)):
 		tab[i] = Image.open(tab_nom_image[i])
   
-  #New_size est definit plus haut et UNE fois
-  redimentionne(tab,new_size)
+  	#New_size est definit plus haut et UNE fois
+  	redimentionne(tab,new_size)
 	
 	# Calcul des couleurs dominante
 	tab_couleur = []
