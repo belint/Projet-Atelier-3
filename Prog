@@ -25,6 +25,7 @@ def mosaique(im_source):
 	
 	return cop
  
+ 
 
 #Redimentionnement des images    
 def redimentionne(tab[],new_size):
