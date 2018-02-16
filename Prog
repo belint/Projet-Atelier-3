@@ -49,16 +49,9 @@ def mosaique(im_source):
 					s_source_g += g
 					s_source_b += b
 			cd_source_r,cd_source_g,cd_source_b = s_source_r//nb_pixel_source ,s_source_g//nb_pixel_source ,s_source_b//nb_pixel_source
-			min = 255*3
-			indice = 0
 			
-			#Recherche de la meilleur image
-			for i in range(len(tab_couleur)):
-				rt,gt,bt = tab_couleur[i][1]
-				tempo_comme_mon_rogue = abs(rt-cd_source_r) + abs(gt-cd_source_g) + abs(bt-cd_source_b)
-				if tempo_comme_mon_rogue < min :
-					min = tempo_comme_mon_rogue
-					indice = tab_couleur[i][0]
+			indice = Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b)
+			
 			pix_tempo = tab[indice].load()
 			
 			#Remplacement des 25x25 pixel par la meilleur image
@@ -74,7 +67,20 @@ def redimentionne(tab[],new_size):
 	for i in range(len(tab)):
 		tab[i] = tab[i].resize((new_size,new_size))
     
-    
+	#Recherche de la meilleur image
+def Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b)
+	min = 255*3
+	indice = 0
+	for i in range(len(tab_couleur)):
+		rt,gt,bt = tab_couleur[i][1]
+		tempo = abs(rt-cd_source_r) + abs(gt-cd_source_g) + abs(bt-cd_source_b)
+		if tempo < min :
+			min = tempo
+			indice = tab_couleur[i][0]
+	return indice
+
+
+
 def main():
     if sys.arg[0] == None:
         print("Vous n'avez pas rentrer d'image")
