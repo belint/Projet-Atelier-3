@@ -19,29 +19,10 @@ def mosaique(im_source):
 	tab_couleur = []
 	Couleur_Dominante(tab,tab_couleur)
 	
-	#Moyenne des 25x25 de l'image source
 	im_source = im_source.resize(((im_source.size[0]//new_size)*new_size,(im_source.size[1]//new_size)*new_size))
 	pix_source = im_source.load()
-	for y in range(im_source.size[1]//25):
-		for x in range(im_source.size[0]//25):
-			s_source_r = 0
-			s_source_g = 0
-			s_source_b = 0
-			nb_pixel_source = im_source.size[0]*im_source.size[1]
-			
-			for y_2 in range(new_size+1):
-				for x_2 in range(new_size+1):
-					r,g,b = pix_source[(x+1)*x_2,(y+1)*y_2]
-					s_source_r += r
-					s_source_g += g
-					s_source_b += b
-			cd_source_r,cd_source_g,cd_source_b = s_source_r//nb_pixel_source ,s_source_g//nb_pixel_source ,s_source_b//nb_pixel_source
-			
-			indice = Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b)
-			
-			pix_tempo = tab[indice].load()
-			
-			Remplacement(new_size,pix_copy,pix_tempo)
+	Moyenne_Image_Source(im_source,pix_source,newsize,im_source,pix_source)
+	
 	return cop
  
 
@@ -50,7 +31,7 @@ def redimentionne(tab[],new_size):
 	for i in range(len(tab)):
 		tab[i] = tab[i].resize((new_size,new_size))
     
-	#Recherche de la meilleur image
+#Recherche de la meilleur image
 def Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b):
 	min = 255*3
 	indice = 0
@@ -86,6 +67,29 @@ def Couleur_Dominante(tab,tab_couleur):
 				somme_b += b
 		c_domi_r,c_domi_g,c_domi_b = somme_r//nb_pixel ,somme_g//nb_pixel, somme_b//nb_pixel
 		tab_couleur.append((i,(c_domi_r,c_domi_g,c_domi_b)))
+
+
+#Moyenne des 25x25 de l'image source
+def Moyenne_Image_Source(im_source,pix_source,newsize,im_source,pix_source):
+	for y in range(image.size[1]//25):
+		for x in range(image.size[0]//25):
+			s_source_r = 0
+			s_source_g = 0
+			s_source_b = 0
+			nb_pixel_source = image.size[0]*image.size[1]
+			
+			for y_2 in range(new_size+1):
+				for x_2 in range(new_size+1):
+					r,g,b = pix_source[(x+1)*x_2,(y+1)*y_2]
+					s_source_r += r
+					s_source_g += g
+					s_source_b += b
+			cd_source_r,cd_source_g,cd_source_b = s_source_r//nb_pixel_source ,s_source_g//nb_pixel_source ,s_source_b//nb_pixel_source
+			indice = Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b)
+			pix_tempo = tab[indice].load()
+			Remplacement(new_size,pix_copy,pix_tempo)
+			
+			
 
 def main():
     if sys.arg[0] == None:
