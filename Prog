@@ -3,7 +3,7 @@ from math import abs
 import os
 import sys
 def mosaique(im_source):
-	tab_nom_image = os.listdir("U:/belint/E2/Atelier_3_traitement_dimage/base_dimage")
+	tab_nom_image = os.listdir("base_dimage")
 	tab = []
 	cop = im_source.copy()
 	pix_copy = cop.load()
