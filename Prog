@@ -7,15 +7,14 @@ def mosaique(im_source):
 	tab = []
 	cop = im_source.copy()
 	pix_copy = cop.load()
-	
+	new_size = 25
+  
 	for i in range(len(tab_nom_image)):
 		tab[i] = Image.open(tab_nom_image[i])
+  
+  #New_size est definit plus haut et UNE fois
+  redimentionne(tab,new_size)
 	
-	#Redimentionnement des images
-	new_size = 25
-	for i in range(len(tab)):
-		tab[i] = tab[i].resize((new_size,new_size))
-		
 	# Calcul des couleurs dominante
 	tab_couleur = []
 	for i in range(len(tab)):
@@ -68,6 +67,14 @@ def mosaique(im_source):
 					pix_copy[(x+1)*x_3,(y+1)*y_3] = pix_tempo[(x+1)*x_3,(y+1)*y_3]
 
 	return cop
+ 
+
+#Redimentionnement des images    
+def redimentionne(tab[],new_size):
+	for i in range(len(tab)):
+		tab[i] = tab[i].resize((new_size,new_size))
+    
+    
 def main():
     if sys.arg[0] == None:
         print("Vous n'avez pas rentrer d'image")
@@ -76,3 +83,4 @@ def main():
 if __name__ == "__main__":
     
     main()
+
