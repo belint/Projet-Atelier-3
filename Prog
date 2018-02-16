@@ -21,7 +21,7 @@ def mosaique(im_source):
 	
 	im_source = im_source.resize(((im_source.size[0]//new_size)*new_size,(im_source.size[1]//new_size)*new_size))
 	pix_source = im_source.load()
-	Moyenne_Image_Source(im_source,pix_source,newsize,im_source,pix_source)
+	Moyenne_Image_Source(im_source,pix_source,newsize,tab_couleur)
 	
 	return cop
  
@@ -70,13 +70,13 @@ def Couleur_Dominante(tab,tab_couleur):
 
 
 #Moyenne des 25x25 de l'image source
-def Moyenne_Image_Source(im_source,pix_source,newsize,im_source,pix_source):
+def Moyenne_Image_Source(im_source,pix_source,newsize,tab_couleur):
 	for y in range(image.size[1]//25):
 		for x in range(image.size[0]//25):
 			s_source_r = 0
 			s_source_g = 0
 			s_source_b = 0
-			nb_pixel_source = image.size[0]*image.size[1]
+			nb_pixel_source = im_source.size[0]*im_source.size[1]
 			
 			for y_2 in range(new_size+1):
 				for x_2 in range(new_size+1):
