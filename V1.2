@@ -1,0 +1,106 @@
+from PIL import Image 
+import math
+import os
+import sys
+def mosaique(chemin_im_source):
+	tab_nom_image = os.listdir("base_dimage")
+	tab = [0]*len(tab_nom_image)
+	im_source = Image.open(chemin_im_source)
+	cop = im_source.copy()
+	pix_copy = cop.load()
+	new_size = 25
+  	
+#	for i in range(len(tab_nom_image)):
+#		print(" // " + tab_nom_image[i] + " // ")
+
+	for i in range(len(tab_nom_image)):
+		tab[i] = Image.open(tab_nom_image[i])
+  
+  	#New_size est definit plus haut et UNE fois
+  	redimentionne(tab,new_size)
+	
+	# Calcul des couleurs dominante
+	tab_couleur = []
+	Couleur_Dominante(tab,tab_couleur)
+	
+	im_source = im_source.resize(((im_source.size[0]//new_size)*new_size,(im_source.size[1]//new_size)*new_size))
+	pix_source = im_source.load()
+	Moyenne_Image_Source(im_source,pix_source,newsize,tab_couleur)
+	
+	return cop
+ 
+
+#Redimentionnement des images    
+def redimentionne(tab,new_size):
+	for i in range(len(tab)):
+		tab[i] = tab[i].resize((new_size,new_size))
+    
+#Recherche de la meilleur image
+def Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b):
+	min = 255*3
+	indice = 0
+	for i in range(len(tab_couleur)):
+		rt,gt,bt = tab_couleur[i][1]
+		tempo = abs(rt-cd_source_r) + abs(gt-cd_source_g) + abs(bt-cd_source_b)
+		if tempo < min :
+			min = tempo
+			indice = tab_couleur[i][0]
+	return indice
+
+#Remplacement des 25x25 pixel par la meilleur image
+def Remplacement(new_size,pix_copy,pix_tempo):
+	for y_3 in range(new_size+1):
+		for x_3 in range(new_size+1):
+			pix_copy[(x+1)*x_3,(y+1)*y_3] = pix_tempo[(x+1)*x_3,(y+1)*y_3]
+			
+			
+#Calcul des couleurs dominante
+def Couleur_Dominante(tab,tab_couleur):
+	for i in range(len(tab)):
+		im = tab[i]
+		pix = im.load()
+		somme_r = 0
+		somme_g = 0
+		somme_b = 0
+		nb_pixel = im.size[0]*im.size[1]
+		for y in range(im.size[1]):
+			for x in range(im.size[0]):
+				r,g,b = pix[x,y]
+				somme_r += r
+				somme_g += g
+				somme_b += b
+		c_domi_r,c_domi_g,c_domi_b = somme_r//nb_pixel ,somme_g//nb_pixel, somme_b//nb_pixel
+		tab_couleur.append((i,(c_domi_r,c_domi_g,c_domi_b)))
+
+
+#Moyenne des 25x25 de l'image source
+def Moyenne_Image_Source(im_source,pix_source,new_size,tab_couleur):
+	for y in range(image.size[1]//25):
+		for x in range(image.size[0]//25):
+			s_source_r = 0
+			s_source_g = 0
+			s_source_b = 0
+			nb_pixel_source = im_source.size[0]*im_source.size[1]
+			
+			for y_2 in range(new_size+1):
+				for x_2 in range(new_size+1):
+					r,g,b = pix_source[(x+1)*x_2,(y+1)*y_2]
+					s_source_r += r
+					s_source_g += g
+					s_source_b += b
+			cd_source_r,cd_source_g,cd_source_b = s_source_r//nb_pixel_source ,s_source_g//nb_pixel_source ,s_source_b//nb_pixel_source
+			indice = Best_Comp(tab_couleur,cd_source_r,cd_source_g,cd_source_b)
+			pix_tempo = tab[indice].load()
+			Remplacement(new_size,pix_copy,pix_tempo)
+			
+			
+
+def main():
+    if sys.argv[1] == None:
+        print("Vous n'avez pas rentrer d'image")
+    else :
+        mosaique(sys.argv[1])
+if __name__ == "__main__":
+    
+    main()
+
