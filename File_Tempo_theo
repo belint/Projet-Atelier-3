@@ -2,9 +2,10 @@ from PIL import Image
 from math import abs
 import os
 import sys
-def mosaique(im_source):
+def mosaique(chemin_im_source):
 	tab_nom_image = os.listdir("base_dimage")
 	tab = []
+	im_source = Image.open(chemin_im_source)
 	cop = im_source.copy()
 	pix_copy = cop.load()
 	new_size = 25
