@@ -1,0 +1,101 @@
+from PIL import Image 
+import math
+import os
+import sys
+def mosaique(chemin_im_source):
+	tab_nom_image = os.listdir("base_dimage")
+	tab = [0]*len(tab_nom_image)
+	im_source = Image.open(chemin_im_source)
+	cop = im_source.copy()
+	pix_copy = cop.load()
+	new_size = 25
+  	
+#	for i in range(len(tab_nom_image)):
+#		print(" // " + tab_nom_image[i] + " // ")
+
+	for i in range(len(tab_nom_image)):
+		tab[i] = Image.open(tab_nom_image[i])
+		tab[i] = tab[i].convert("HSV")
+  
+  	#New_size est definit plus haut et UNE fois
+  	redimentionne(tab,new_size)
+	
+	# Calcul des couleurs dominante
+	tab_couleur = []
+	Couleur_Dominante(tab,tab_couleur)
+	
+	im_source = im_source.resize(((im_source.size[0]//new_size)*new_size,(im_source.size[1]//new_size)*new_size))
+	pix_source = im_source.load()
+	Moyenne_Image_Source(im_source,pix_source,new_size,tab_couleur,tab)
+	
+	im_source.show()
+	return cop
+ 
+
+#Redimentionnement des images    
+def redimentionne(tab,new_size):
+	for i in range(len(tab)):
+		tab[i] = tab[i].resize((new_size,new_size))
+    
+#Recherche de la meilleur image
+def Best_Comp(tab_couleur,cd_source_h):
+	min = sys.maxint
+	indice = 0
+	for i in range(len(tab_couleur)):
+		if cd_source_h < min :
+			min = cd_source_h
+			indice = tab_couleur[i][0]
+	return indice
+
+#Remplacement des 25x25 pixel par la meilleur image
+def Remplacement(new_size,pix_copy,pix_tempo,x,y,taille_source_x,taille_source_y):
+	for y_3 in range(new_size):
+		for x_3 in range(new_size):
+			if (new_size*x)+x_3 < taille_source_x and (new_size*y)+y_3 < taille_source_y :
+				pix_copy[(new_size*x)+x_3,(new_size*y)+y_3] = pix_tempo[x_3,y_3]
+			
+			
+#Calcul des couleurs dominante
+def Couleur_Dominante(tab,tab_couleur):
+	for i in range(len(tab)):
+		im = tab[i]		
+		pix = im.load()
+		somme_h = 0 
+		nb_pixel = im.size[0]*im.size[1]
+
+		for y in range(im.size[1]):
+			for x in range(im.size[0]):
+				h = pix[x,y]
+				somme_h
+		c_domi_h = somme_h//nb_pixel
+		tab_couleur.append((i,c_domi_h))
+
+
+#Moyenne des 25x25 de l'image source
+def Moyenne_Image_Source(im_source,pix_source,new_size,tab_couleur,tab):
+	for y in range(im_source.size[1]//new_size):
+		for x in range(im_source.size[0]//new_size):
+			s_source_h = 0
+			
+			
+			for y_2 in range(new_size):
+				for x_2 in range(new_size):
+					h,s,v = pix_source[(new_size*x)+x_2,(new_size*y)+y_2]
+					s_source_h += h
+						
+			cd_source_h = s_source_h//new_size	
+			indice = Best_Comp(tab_couleur,cd_source_h)
+			pix_tempo = tab[indice].load()
+			Remplacement(new_size,pix_source,pix_tempo,x,y,im_source.size[0],im_source.size[1])
+			
+			
+
+def main():
+    if sys.argv[1] == None:
+        print("Vous n'avez pas rentrer d'image")
+    else :
+        mosaique(sys.argv[1])
+if __name__ == "__main__":
+    
+    main()
+
